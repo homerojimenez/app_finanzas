@@ -7,7 +7,7 @@ export const formatCurrency = (amount: number, currency = 'EUR', locale = 'es-ES
 
 export const sentenceType = (type: string) =>
   type
-    .replaceAll('_', ' ')
+    .split('_').join(' ')
     .replace('recurring fixed expense', 'gasto fijo')
     .replace('variable expense', 'gasto variable')
     .replace('one time expense', 'gasto puntual')

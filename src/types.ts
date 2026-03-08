@@ -1,3 +1,3 @@
-import type { useFinanceStore } from '@/store/useFinanceStore';
+import { useFinanceStore } from '@/store/useFinanceStore';
 
 export type FinanceState = ReturnType<typeof useFinanceStore.getState>;
