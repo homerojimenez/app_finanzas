@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "deploy:cf": "wrangler versions upload",
+    "deploy:cf:npx": "npx wrangler versions upload"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

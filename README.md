@@ -49,11 +49,18 @@ src/
   data/demo/         # perfiles demo realistas
 ```
 
-## Deploy (Cloudflare Pages / hosting estático)
-1. Ejecutar `npm run build`.
-2. Publicar carpeta `dist/`.
-3. Configurar fallback SPA a `index.html`.
-4. Mantener caché larga para assets versionados.
+## Deploy en Cloudflare (Workers Assets)
+Este repo incluye `wrangler.jsonc` para que `wrangler versions upload` sepa:
+- dónde están los assets (`./dist`),
+- que es una SPA (`not_found_handling: "single-page-application"`),
+- y que debe ejecutar `npm run build` antes de subir.
+
+Comandos:
+1. `npm run deploy:cf` (si tienes wrangler instalado)
+2. o `npm run deploy:cf:npx`
+
+Si configuras Cloudflare con comando de deploy manual, usa exactamente:
+- `npx wrangler versions upload`
 
 ## Limitaciones del MVP
 - No conexión bancaria.
