@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest run",
-    "deploy:cf": "wrangler versions upload",
-    "deploy:cf:npx": "npx wrangler versions upload"
+    "deploy:cf": "npm run build && wrangler versions upload --assets=./dist",
+    "deploy:cf:npx": "npm run build && npx wrangler versions upload --assets=./dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

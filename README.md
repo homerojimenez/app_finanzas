@@ -50,17 +50,17 @@ src/
 ```
 
 ## Deploy en Cloudflare (Workers Assets)
-Este repo incluye `wrangler.jsonc` para que `wrangler versions upload` sepa:
-- dónde están los assets (`./dist`),
-- que es una SPA (`not_found_handling: "single-page-application"`),
-- y que debe ejecutar `npm run build` antes de subir.
+Este repo usa `wrangler.toml` (formato estándar de Wrangler) y **requiere build antes del upload**.
 
-Comandos:
-1. `npm run deploy:cf` (si tienes wrangler instalado)
+Comandos locales:
+1. `npm run deploy:cf`
 2. o `npm run deploy:cf:npx`
 
-Si configuras Cloudflare con comando de deploy manual, usa exactamente:
-- `npx wrangler versions upload`
+Si configuras Cloudflare con comando manual, usa exactamente:
+- `npm run build && npx wrangler versions upload --assets=./dist`
+
+> Importante: si ejecutas solo `npx wrangler versions upload` sin `--assets` y sin build previo,
+> Wrangler no encuentra entrypoint/assets y falla con `Missing entry-point to Worker script or to assets directory`.
 
 ## Limitaciones del MVP
 - No conexión bancaria.
