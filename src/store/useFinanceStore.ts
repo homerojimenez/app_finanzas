@@ -34,6 +34,9 @@ interface FinanceState extends FinanceDataState {
   completeOnboarding: (settings: Partial<UserSettings>) => void;
   addTransaction: (tx: Transaction) => void;
   addIncome: (income: IncomeSource) => void;
+  toggleIncomeActive: (id: string) => void;
+  toggleIncomeProjection: (id: string) => void;
+  removeIncome: (id: string) => void;
   addCategory: (category: ExpenseCategory) => void;
   closeMonth: (snapshot: MonthlySnapshot) => void;
   restoreData: (payload: Partial<FinanceDataState>) => void;
@@ -80,6 +83,9 @@ export const useFinanceStore = create<FinanceState>()(
       completeOnboarding: (settings) => set((state) => ({ settings: { ...state.settings, ...settings, onboardingCompleted: true } })),
       addTransaction: (tx) => set((state) => ({ transactions: [tx, ...state.transactions] })),
       addIncome: (income) => set((state) => ({ incomes: [income, ...state.incomes] })),
+      toggleIncomeActive: (id) => set((state) => ({ incomes: state.incomes.map((item) => item.id === id ? { ...item, active: !item.active } : item) })),
+      toggleIncomeProjection: (id) => set((state) => ({ incomes: state.incomes.map((item) => item.id === id ? { ...item, includeInProjection: !item.includeInProjection } : item) })),
+      removeIncome: (id) => set((state) => ({ incomes: state.incomes.filter((item) => item.id !== id) })),
       addCategory: (category) => set((state) => ({ categories: [...state.categories, category] })),
       closeMonth: (snapshot) => set((state) => ({ snapshots: [snapshot, ...state.snapshots] })),
       restoreData: (payload) => set(() => applyDataFallbacks(payload)),

@@ -1,10 +1,11 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Calendar, FolderKanban, Goal, LayoutDashboard, PieChart, Receipt, Settings, Wallet } from 'lucide-react';
+import { Calendar, FolderKanban, Goal, LayoutDashboard, PieChart, Receipt, Settings, Wallet, Landmark } from 'lucide-react';
 
 const desktopLinks = [
   { to: '/', label: 'Resumen', icon: LayoutDashboard },
   { to: '/month-plan', label: 'Plan del mes', icon: Wallet },
   { to: '/transactions', label: 'Movimientos', icon: Receipt },
+  { to: '/incomes', label: 'Ingresos', icon: Landmark },
   { to: '/categories', label: 'Categorías', icon: FolderKanban },
   { to: '/calendar', label: 'Calendario', icon: Calendar },
   { to: '/reports', label: 'Reportes', icon: PieChart },
@@ -12,7 +13,7 @@ const desktopLinks = [
   { to: '/settings', label: 'Ajustes', icon: Settings }
 ];
 
-const mobileLinks = desktopLinks.filter((link) => ['/', '/month-plan', '/transactions', '/reports', '/settings'].includes(link.to));
+const mobileLinks = desktopLinks.filter((link) => ['/', '/month-plan', '/incomes', '/transactions', '/settings'].includes(link.to));
 
 export function AppShell() {
   const { pathname } = useLocation();

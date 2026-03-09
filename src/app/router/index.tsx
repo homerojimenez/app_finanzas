@@ -3,6 +3,7 @@ import { AppShell } from '@/app/layout/AppShell';
 import { DashboardPage } from '@/features/dashboard/DashboardPage';
 import { MonthPlanPage } from '@/features/month-plan/MonthPlanPage';
 import { TransactionsPage } from '@/features/transactions/TransactionsPage';
+import { IncomesPage } from '@/features/income/IncomesPage';
 import { CategoriesPage } from '@/features/categories/CategoriesPage';
 import { CalendarPage } from '@/features/calendar/CalendarPage';
 import { ReportsPage } from '@/features/reports/ReportsPage';
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
       { index: true, element: <DashboardPage /> },
       { path: 'month-plan', element: <MonthPlanPage /> },
       { path: 'transactions', element: <TransactionsPage /> },
+      { path: 'incomes', element: <IncomesPage /> },
       { path: 'categories', element: <CategoriesPage /> },
       { path: 'calendar', element: <CalendarPage /> },
       { path: 'reports', element: <ReportsPage /> },
