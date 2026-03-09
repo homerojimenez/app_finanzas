@@ -3,7 +3,7 @@ import { EmptyState } from '@/components/shared/EmptyState';
 import { Button } from '@/components/ui/button';
 import { useFinanceStore } from '@/store/useFinanceStore';
 import type { Transaction } from '@/domain/types/finance';
-import { formatCurrency, sentenceType } from '@/lib/format';
+import { emojiByType, formatCurrency, sentenceType } from '@/lib/format';
 
 type TxForm = {
   amount: number;
@@ -12,7 +12,7 @@ type TxForm = {
 };
 
 export function TransactionsPage() {
-  const { transactions, categories, addTransaction } = useFinanceStore();
+  const { transactions, categories, addTransaction, removeTransaction } = useFinanceStore();
   const { register, handleSubmit, reset } = useForm<TxForm>({
     defaultValues: {
       amount: 0,
@@ -72,10 +72,13 @@ export function TransactionsPage() {
           {transactions.map((tx) => (
             <div key={tx.id} className="flex items-center justify-between rounded-xl bg-white p-3">
               <div>
-                <p className="text-sm font-medium">{categories.find((c) => c.id === tx.categoryId)?.name ?? 'Sin categoría'}</p>
+                <p className="text-sm font-medium">{emojiByType(tx.type)} {categories.find((c) => c.id === tx.categoryId)?.name ?? 'Sin categoría'}</p>
                 <p className="text-xs text-slate-500">{sentenceType(tx.type)}</p>
               </div>
-              <span className={tx.type === 'income' ? 'font-medium text-income' : 'font-medium text-expense'}>{formatCurrency(tx.amount)}</span>
+              <div className="text-right">
+                <span className={tx.type === 'income' ? 'font-medium text-income' : 'font-medium text-expense'}>{formatCurrency(tx.amount)}</span>
+                <button type="button" className="block text-xs text-red-600 ml-auto" onClick={() => removeTransaction(tx.id)}>Eliminar</button>
+              </div>
             </div>
           ))}
         </div>
