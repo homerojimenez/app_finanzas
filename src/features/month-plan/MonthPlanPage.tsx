@@ -61,16 +61,20 @@ export function MonthPlanPage() {
       </Card>
 
       <Card>
-        <h2 className="font-semibold mb-2">Reservas anuales (para evitar sustos)</h2>
+        <h2 className="font-semibold mb-2">Gastos anuales a amortizar (más claro)</h2>
         {annualCards.length === 0 ? (
           <p className="text-sm text-slate-500">No hay pagos anuales configurados. Añadirlos mejora mucho la previsión real del mes.</p>
         ) : (
-          <div className="space-y-2 text-sm">
+          <div className="space-y-3 text-sm">
             {annualCards.map((item) => (
               <div key={item.id} className="rounded-xl bg-slate-50 p-3">
                 <p className="font-medium">{item.title}</p>
-                <p>Vencimiento: {item.dueLabel} · Apartar al mes: <strong>{formatCurrency(item.monthlyReserve)}</strong></p>
-                <p>Deberías llevar reservado: {formatCurrency(item.shouldReservedByNow)} · Pendiente: {formatCurrency(item.remaining)}</p>
+                <p>Vence en {item.dueLabel} · Total anual: <strong>{formatCurrency(item.amount)}</strong></p>
+                <p>Amortización ideal mensual: <strong>{formatCurrency(item.monthlyReserve)}</strong></p>
+                <p>Llevas teóricamente amortizado: {formatCurrency(item.shouldReservedByNow)} ({item.progressPercent.toFixed(0)}%)</p>
+                <div className="h-2 rounded-full bg-slate-200 mt-1 mb-1"><div className="h-2 rounded-full bg-reserve" style={{ width: `${item.progressPercent}%` }} /></div>
+                <p>Pendiente hasta vencimiento: {formatCurrency(item.remaining)} en {item.monthsLeft} mes(es).</p>
+                <p className={item.isTight ? 'text-amber-700' : 'text-slate-600'}>{item.isTight ? `Si empiezas tarde, deberías apartar ${formatCurrency(item.adjustedMonthlyNeeded)} al mes.` : `Con ${formatCurrency(item.monthlyReserve)} al mes llegas al objetivo sin sustos.`}</p>
               </div>
             ))}
           </div>

@@ -7,7 +7,7 @@ import { getExpectedIncome, getRecommendations } from '@/domain/selectors/financ
 import { upcomingPayments } from '@/domain/logic/calculations';
 import { formatCurrency, sentenceType } from '@/lib/format';
 
-const chartColors = ['#0ea5e9', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6'];
+const chartColors = ['#0ea5e9', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#6366f1'];
 
 export function DashboardPage() {
   const state = useFinanceStore();
@@ -15,13 +15,16 @@ export function DashboardPage() {
   const monthExpense = state.transactions.filter((t) => t.type.includes('expense')).reduce((acc, tx) => acc + tx.amount, 0);
 
   const recommendations = getRecommendations(state);
+  const totalCategorySpend = state.transactions.filter((tx) => tx.type.includes('expense')).reduce((a, b) => a + b.amount, 0);
   const categoryData = state.categories
     .slice(0, 6)
     .map((cat) => ({
       name: cat.name,
       value: state.transactions.filter((tx) => tx.categoryId === cat.id && tx.type.includes('expense')).reduce((a, b) => a + b.amount, 0)
     }))
-    .filter((item) => item.value > 0);
+    .filter((item) => item.value > 0)
+    .map((item) => ({ ...item, percent: totalCategorySpend > 0 ? (item.value / totalCategorySpend) * 100 : 0 }));
+
   const monthData = state.snapshots.slice(0, 5).reverse().map((snap) => ({ month: snap.month.slice(5), savings: snap.savings }));
   const nearPayments = upcomingPayments(state.transactions);
 
@@ -56,13 +59,30 @@ export function DashboardPage() {
             ) : (
               <ResponsiveContainer>
                 <PieChart>
-                  <Pie data={categoryData} dataKey="value" nameKey="name" outerRadius={74}>
+                  <Pie
+                    data={categoryData}
+                    dataKey="value"
+                    nameKey="name"
+                    outerRadius={74}
+                    label={({ name, percent }) => `${name} ${(Number(percent) * 100).toFixed(0)}%`}
+                    labelLine={false}
+                  >
                     {categoryData.map((_, i) => <Cell key={i} fill={chartColors[i % chartColors.length]} />)}
                   </Pie>
                 </PieChart>
               </ResponsiveContainer>
             )}
           </div>
+          {categoryData.length > 0 && (
+            <div className="mt-2 space-y-1 text-xs">
+              {categoryData.map((item, i) => (
+                <div key={item.name} className="flex items-center justify-between">
+                  <span className="flex items-center gap-2"><span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }} />{item.name}</span>
+                  <span>{formatCurrency(item.value)} · {item.percent.toFixed(0)}%</span>
+                </div>
+              ))}
+            </div>
+          )}
         </Card>
 
         <Card>

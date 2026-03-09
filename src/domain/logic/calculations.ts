@@ -20,6 +20,8 @@ export const calculateAnnualReserve = (item: AnnualObligation, now = new Date())
   const shouldReservedByNow = Math.min(item.amount, monthsElapsed * monthlyReserve);
   const remaining = Math.max(0, item.amount - shouldReservedByNow);
   const monthsLeft = Math.max(1, differenceInCalendarMonths(dueMonth, planningMonth) + 1);
+  const progressPercent = item.amount > 0 ? Math.min(100, (shouldReservedByNow / item.amount) * 100) : 0;
+  const adjustedMonthlyNeeded = remaining / monthsLeft;
 
   return {
     monthlyReserve,
@@ -27,7 +29,9 @@ export const calculateAnnualReserve = (item: AnnualObligation, now = new Date())
     dueLabel: format(parseISO(item.dueDate), 'MMM yyyy'),
     monthsLeft,
     remaining,
-    behind: remaining > monthsLeft * monthlyReserve
+    progressPercent,
+    adjustedMonthlyNeeded,
+    isTight: adjustedMonthlyNeeded > monthlyReserve * 1.1
   };
 };
 
