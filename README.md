@@ -80,3 +80,4 @@ Si configuras Cloudflare con comando manual, usa exactamente:
 
 ## Disclaimer
 Herramienta de organización financiera personal. No sustituye asesoramiento fiscal, contable o legal.
+

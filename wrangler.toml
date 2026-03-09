@@ -1,6 +1,12 @@
 name = "finanzas-clara"
 compatibility_date = "2026-03-08"
 
+# Ensure Cloudflare can upload this as static assets Worker (SPA)
 [assets]
 directory = "./dist"
 not_found_handling = "single-page-application"
+
+# Important: wrangler versions upload does NOT build your Vite app unless configured.
+# This guarantees dist/ exists during deploys triggered with only `wrangler versions upload`.
+[build]
+command = "bun run build || npm run build"
